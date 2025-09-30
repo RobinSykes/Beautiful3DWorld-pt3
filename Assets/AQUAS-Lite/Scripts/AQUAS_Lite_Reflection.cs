@@ -26,10 +26,8 @@ namespace AQUAS_Lite
 #if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
     public bool disableInEditMode;
 #endif
-
-        public void OnWillRenderObject()
+        private void OnPreCull()
         {
-
 #if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
         if (disableInEditMode && !Application.isPlaying)
         {
@@ -49,6 +47,7 @@ namespace AQUAS_Lite
             if (s_InsideRendering)
                 return;
             s_InsideRendering = true;
+            OnDisable();
 
             Camera reflectionCamera;
             CreateMirrorObjects(cam, out reflectionCamera);
@@ -99,7 +98,6 @@ namespace AQUAS_Lite
             reflectionCamera.transform.position = newpos;
             Vector3 euler = cam.transform.eulerAngles;
             reflectionCamera.transform.eulerAngles = new Vector3(0, euler.y, euler.z);
-            reflectionCamera.Render();
             reflectionCamera.transform.position = oldpos;
             GL.invertCulling = false;        //should be used
                                              //GL.SetRevertBackfacing (false);   //obsolete
@@ -127,23 +125,19 @@ namespace AQUAS_Lite
                 QualitySettings.pixelLightCount = oldPixelLightCount;
 
             s_InsideRendering = false;
+            void OnDisable()
+            {
+                if (m_ReflectionTexture)
+                {
+                    DestroyImmediate(m_ReflectionTexture);
+                    m_ReflectionTexture = null;
+                }
+                foreach (DictionaryEntry kvp in m_ReflectionCameras)
+                    DestroyImmediate(((Camera)kvp.Value).gameObject);
+                m_ReflectionCameras.Clear();
+            }
         }
         #endregion
-
-        //<summary>
-        // Cleans up all the objects that were possibly created
-        //</summary>
-        void OnDisable()
-        {
-            if (m_ReflectionTexture)
-            {
-                DestroyImmediate(m_ReflectionTexture);
-                m_ReflectionTexture = null;
-            }
-            foreach (DictionaryEntry kvp in m_ReflectionCameras)
-                DestroyImmediate(((Camera)kvp.Value).gameObject);
-            m_ReflectionCameras.Clear();
-        }
 
         private void UpdateCameraModes(Camera src, Camera dest)
         {
