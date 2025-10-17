@@ -1,11 +1,11 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 using UnityEngine.UIElements;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] UIDocument mainMenuDocument;
+    [SerializeField] private UIDocument mainMenuDocument;
 
     private Button settingsButton;
     private Button achievementsButton;
@@ -26,15 +26,18 @@ public class MainMenu : MonoBehaviour
 
     private void ShowSettingsMenu()
     {
-        print("Show Settings Menu");
+        Debug.Log("Show Settings Menu");
     }
+
     private void ShowAchievementsMenu()
     {
-        print("Show Achievements Menu");
+        Debug.Log("Show Achievements Menu");
     }
+
     private void Play()
     {
-        SceneManager.LoadScene("MainWorld");
-        print("playing");
+        // Always reload MainWorld scene fresh
+        SceneManager.LoadScene("MainWorld", LoadSceneMode.Single);
+        Debug.Log("Playing MainWorld - scene reset");
     }
 }

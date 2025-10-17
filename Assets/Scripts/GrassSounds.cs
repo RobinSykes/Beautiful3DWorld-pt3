@@ -1,9 +1,10 @@
+using StarterAssets;
 using UnityEngine;
 
 public class GrassSounds : MonoBehaviour
 {
     public GameObject targetObject; // Assign in Inspector
-    private FirstPersonController firstPersonController;
+    private ThirdPersonController thirdPersonController;
     public AudioSource grassSounds;
     public AudioClip[] grassSoundsClip;
     private float soundTimer = 0f;
@@ -12,7 +13,7 @@ public class GrassSounds : MonoBehaviour
 
     void Start()
     {
-        firstPersonController = targetObject.GetComponent<FirstPersonController>();
+        thirdPersonController = targetObject.GetComponent<ThirdPersonController>();
     }
 
     void Update()
@@ -41,6 +42,6 @@ public class GrassSounds : MonoBehaviour
 
     void CheckGrounded()
     {
-        isGrounded = firstPersonController.isGrounded;
+        isGrounded = thirdPersonController.isGrounded;
     }
 }
