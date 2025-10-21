@@ -1468,6 +1468,7 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 428283333724603129
   - rid: 428283334274843052
+  - rid: 428283354129105448
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -1489,3 +1490,11 @@ MonoBehaviour:
           m_Value1: 13975120238218316562
         Name: New Random Points In Box Collider
         m_Value: {fileID: 1680974074810220325}
+    - rid: 428283354129105448
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 13152747870972716238
+          m_Value1: 14746359659510864956
+        Name: Player
+        m_Value: {fileID: 0}
