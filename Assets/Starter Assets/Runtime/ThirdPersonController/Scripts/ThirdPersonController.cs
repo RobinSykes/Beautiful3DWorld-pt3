@@ -98,6 +98,8 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        // particle system
+        [SerializeField] private GameObject ParticleSystem;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
 #endif
@@ -160,6 +162,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            PlayParticleSystems();
         }
 
         private void LateUpdate()
@@ -174,6 +177,25 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+        }
+        private void PlayParticleSystems()
+        {
+            var ps = ParticleSystem.GetComponentInChildren<ParticleSystem>();
+            var emission = ps.emission;
+
+            if (_speed > 1 && isGrounded)
+            {
+                // Allow new dust particles to spawn
+                emission.enabled = true;
+
+                if (!ps.isPlaying)
+                    ps.Play();
+            }
+            else
+            {
+                // Stop new particles from spawning, but let existing ones fade naturally
+                emission.enabled = false;
+            }
         }
 
         private void GroundedCheck()

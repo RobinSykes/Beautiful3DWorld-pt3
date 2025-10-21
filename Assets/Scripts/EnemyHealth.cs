@@ -10,12 +10,17 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] public FloatingHealthBar HealthBar;
 
     private BehaviorGraphAgent behaviorGraph;
+    private bool isDead = false;
+    public bool IsDead => isDead;
+
+    private CapsuleCollider capsuleCollider;
 
     private void Awake()
     {
         HealthBar = GetComponentInChildren<FloatingHealthBar>();
         animator = GetComponentInChildren<Animator>();
-        behaviorGraph = GetComponent<BehaviorGraphAgent>(); // or BehaviorExecutor if that's what you're using
+        behaviorGraph = GetComponent<BehaviorGraphAgent>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     void Start()
@@ -26,14 +31,14 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        // --- NEW: check if player is blocking before taking damage ---
+        if (isDead) return;
+
         PlayerAnimationController player = Object.FindFirstObjectByType<PlayerAnimationController>();
         if (player != null && player.IsBlocking())
         {
             Debug.Log($"{gameObject.name} tried to deal damage, but player is blocking!");
             return;
         }
-        // -------------------------------------------------------------
 
         Health -= damageAmount;
         if (HealthBar != null)
@@ -45,26 +50,30 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        // Pick random death animation
+        if (isDead) return;
+        isDead = true;
+
+        gameObject.tag = "Untagged";
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        if (capsuleCollider != null)
+            capsuleCollider.enabled = false;
+
         int randomDeath = Random.Range(0, 3);
         animator.SetInteger("DeathIndex", randomDeath);
         Debug.Log($"{gameObject.name} has died.");
 
-        // Disable the behavior graph
         if (behaviorGraph != null)
         {
             behaviorGraph.enabled = false;
             Debug.Log("Behavior graph disabled on death.");
         }
 
-        // Disable health bar
         if (HealthBar != null)
         {
             HealthBar.gameObject.SetActive(false);
             Debug.Log("Health bar hidden on death.");
         }
 
-        // Trigger death animation
         if (animator != null)
             animator.SetTrigger("IsDead");
 
@@ -73,14 +82,8 @@ public class EnemyHealth : MonoBehaviour
 
     private IEnumerator HandleDeathSequence()
     {
-        // Wait 3 seconds before sinking
-        gameObject.layer = LayerMask.NameToLayer("Default");
         yield return new WaitForSeconds(3f);
-
-        // Sink into ground over 2 seconds
         yield return StartCoroutine(SinkIntoGround(2f, 2f));
-
-        // Wait 5 more seconds before destroying
         yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
@@ -97,7 +100,8 @@ public class EnemyHealth : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-        Destroy(gameObject);
+
         transform.position = endPos;
+        Destroy(gameObject);
     }
 }

@@ -61,6 +61,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         DealDamage();
+        DealDamageToAnimal();
     }
 
     private void DealDamage()
@@ -73,6 +74,20 @@ public class PlayerAnimationController : MonoBehaviour
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(attackDamage);
+                Debug.Log($"Dealt {attackDamage} damage to {enemy.name}");
+            }
+        }
+    }
+    private void DealDamageToAnimal()
+    {
+        Collider[] hitAnimals = Physics.OverlapSphere(transform.position, attackRange, enemyLayer);
+
+        foreach (Collider enemy in hitAnimals)
+        {
+            AnimalHealth animalhealth = enemy.GetComponent<AnimalHealth>();
+            if (animalhealth != null)
+            {
+                animalhealth.TakeDamage(attackDamage);
                 Debug.Log($"Dealt {attackDamage} damage to {enemy.name}");
             }
         }
