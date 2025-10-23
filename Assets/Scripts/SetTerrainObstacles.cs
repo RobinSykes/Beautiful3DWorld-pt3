@@ -27,7 +27,7 @@ public class SetTerrainObstacles : MonoBehaviour
 
         Debug.Log("Adding " + Obstacle.Length + " navMeshObstacle Components for Trees");
 
-        string[] excludedNames = { "PT_Caesars_Mushroom_01", "PT_Generic_Shrub_01_green", "PT_River_Rock_Pile_02", "PT_Generic_Shrub_01_dead", "PT_Poppy_02" };
+        string[] excludedNames = { "PT_Caesars_Mushroom_01", "PT_Generic_Shrub_01_green", "PT_River_Rock_Pile_02", "PT_Generic_Shrub_01_dead", "PT_Poppy_02", "PT_Generic_Rock_01" };
 
         foreach (TreeInstance tree in Obstacle)
         {
