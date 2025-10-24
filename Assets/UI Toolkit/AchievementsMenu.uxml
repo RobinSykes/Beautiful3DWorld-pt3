@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/AchievementsMenuStyle.uss?fileID=7433441132597879392&amp;guid=0fb2212a9512d1040ba4724640d0f531&amp;type=3#AchievementsMenuStyle" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/packages/DontUseAnymore/Fantasy%20Skybox%20FREE/Cubemaps/FS003/Images/FS003_Night_Cubemap_up.png?fileID=2800000&amp;guid=31372d00a63455041a771057c560a152&amp;type=3#FS003_Night_Cubemap_up&quot;);">
+        <ui:Label text="Achievements" class="header" style="background-color: rgba(0, 0, 0, 0); -unity-text-align: middle-center; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=d7aea3f930ed0634db467188c4787919&amp;type=3#NotInter-Regular&quot;);">
+            <ui:Button text="Main Menu&#10;" name="MainMenuButton" class="button" />
+        </ui:Label>
+        <ui:Label text="Total Enemies Killed: " name="KillCountText" class="Label" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -52,7 +52,9 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-
+        KillManager.Instance?.AddKill();
+        if (KillManager.Instance == null)
+            Debug.Log("No killmanager found");
         gameObject.tag = "Untagged";
         gameObject.layer = LayerMask.NameToLayer("Default");
         if (capsuleCollider != null)

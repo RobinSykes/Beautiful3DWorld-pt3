@@ -26,11 +26,13 @@ public class MainMenu : MonoBehaviour
 
     private void ShowSettingsMenu()
     {
+        SceneManager.LoadScene("SettingsMenu");
         Debug.Log("Show Settings Menu");
     }
 
     private void ShowAchievementsMenu()
     {
+        SceneManager.LoadScene("AchievementsMenu");
         Debug.Log("Show Achievements Menu");
     }
 
