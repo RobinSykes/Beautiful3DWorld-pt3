@@ -454,6 +454,81 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f2ce3b8de43bdcc4da16c89b88ae5798, type: 3}
   m_PrefabInstance: {fileID: 90045224286198272}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3023485265800451057
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6089199951022644673}
+    m_Modifications:
+    - target: {fileID: 1715429173108024, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_Name
+      value: HitRock01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198689267340774794, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199835861502868456, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+--- !u!4 &3025243719165088927 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4012078544766830, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+  m_PrefabInstance: {fileID: 3023485265800451057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3113237498024582779 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198689267340774794, guid: dc1d5ca3304bfa943859960d5d1bb9b3, type: 3}
+  m_PrefabInstance: {fileID: 3023485265800451057}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5325388618766732537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -806,6 +881,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbcac1061f23eb549a963ca28e997147, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8354981818623789499}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbcac1061f23eb549a963ca28e997147, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3025243719165088927}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bbcac1061f23eb549a963ca28e997147, type: 3}
       insertIndex: -1
@@ -968,6 +1046,8 @@ MonoBehaviour:
   Maxhealth: 100
   animator: {fileID: 171422398656677819}
   HealthBar: {fileID: 7488371584441934722}
+  skeletonHit: {fileID: 3113237498024582779}
+  villagerHit: {fileID: 0}
   deathAudio: {fileID: 0}
 --- !u!114 &-8779843764462806121
 MonoBehaviour:

@@ -11,6 +11,8 @@ TagManager:
   - fogBoundary
   - GameManager
   - Boss
+  - FxTemporaire
+  - Villager
   layers:
   - Default
   - TransparentFX

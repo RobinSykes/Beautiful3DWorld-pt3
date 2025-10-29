@@ -11,7 +11,8 @@ public class EnemyHealth : MonoBehaviour
     private BehaviorGraphAgent behaviorGraph;
     private bool isDead = false;
     public bool IsDead => isDead;
-
+    public ParticleSystem skeletonHit;
+    public ParticleSystem villagerHit;
     private CapsuleCollider capsuleCollider;
     public AudioSource deathAudio;
 
@@ -51,6 +52,14 @@ public class EnemyHealth : MonoBehaviour
                     playerAnimationController.PlayBloodParticle();
                 }
             }
+            if (gameObject.CompareTag("Villager"))
+            {
+                villagerHit.Play();
+            } 
+            if (gameObject.CompareTag("Enemy"))
+            {
+                skeletonHit.Play();
+            }
 
         Health -= damageAmount;
             if (HealthBar != null)
@@ -74,32 +83,71 @@ public class EnemyHealth : MonoBehaviour
         deathAudio.Play();
         Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
         KillManager.Instance?.AddKill(transform.position);
-        gameObject.tag = "Untagged";
-        gameObject.layer = LayerMask.NameToLayer("Default");
         if (capsuleCollider != null)
             capsuleCollider.enabled = false;
 
         int randomDeath = Random.Range(0, 3);
         animator.SetInteger("DeathIndex", randomDeath);
         Debug.Log($"{gameObject.name} has died.");
-        if (behaviorGraph != null)
+        if (gameObject.CompareTag("Villager"))
         {
-            behaviorGraph.enabled = false;
-            Debug.Log("Behavior graph disabled on death.");
+            gameObject.tag = "Untagged";
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            if (behaviorGraph != null)
+            {
+                behaviorGraph.enabled = false;
+                Debug.Log("Behavior graph disabled on death.");
+            }
+
+            if (HealthBar != null)
+            {
+                HealthBar.gameObject.SetActive(false);
+                Debug.Log("Health bar hidden on death.");
+            }
+
+            if (animator != null)
+                animator.SetTrigger("IsDead");
+
+            StartCoroutine(HandleDeathSequence());
+        }
+        if (gameObject.CompareTag("Enemy"))
+        {
+            gameObject.tag = "Untagged";
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            if (behaviorGraph != null)
+            {
+                behaviorGraph.enabled = false;
+                Debug.Log("Behavior graph disabled on death.");
+            }
+
+            if (HealthBar != null)
+            {
+                HealthBar.gameObject.SetActive(false);
+                Debug.Log("Health bar hidden on death.");
+            }
+
+            if (animator != null)
+                animator.SetTrigger("IsDead");
+
+            StartCoroutine(HandleDeathSequence());
+        }
+        if (gameObject.CompareTag("Player"))
+        {
+            gameObject.tag = "Untagged";
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            if (HealthBar != null)
+            {
+                HealthBar.gameObject.SetActive(false);
+                Debug.Log("Health bar hidden on death.");
+            }
+
+            if (animator != null)
+                animator.SetTrigger("IsDead");
+                animator.SetBool("Dead", true);
+                StartCoroutine(SinkPlayerIntoGround(2f, 2f));
         }
 
-        if (HealthBar != null)
-        {
-            HealthBar.gameObject.SetActive(false);
-            Debug.Log("Health bar hidden on death.");
-        }
-
-        if (animator != null)
-            animator.SetTrigger("IsDead");
-
-        StartCoroutine(HandleDeathSequence());
     }
-
     private IEnumerator HandleDeathSequence()
     {
         yield return new WaitForSeconds(3f);
@@ -123,5 +171,21 @@ public class EnemyHealth : MonoBehaviour
 
         transform.position = endPos;
         Destroy(gameObject);
+    }
+    private IEnumerator SinkPlayerIntoGround(float duration, float distance)
+    {
+        yield return new WaitForSeconds(3f);
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos - new Vector3(0, distance, 0);
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPos;
     }
 }
