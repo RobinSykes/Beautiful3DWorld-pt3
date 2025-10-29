@@ -14,6 +14,7 @@ public class EnemyHealth : MonoBehaviour
     public bool IsDead => isDead;
 
     private CapsuleCollider capsuleCollider;
+    public AudioSource deathAudio;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class EnemyHealth : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         behaviorGraph = GetComponent<BehaviorGraphAgent>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        deathAudio = GetComponentInChildren<AudioSource>();
     }
 
     void Start()
@@ -31,30 +33,40 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        if (isDead) return;
-
-        PlayerAnimationController player = Object.FindFirstObjectByType<PlayerAnimationController>();
-        if (player != null && player.IsBlocking())
-        {
+            
+            if (isDead) return;
+            PlayerAnimationController player = Object.FindFirstObjectByType<PlayerAnimationController>();
+            if (player != null && player.IsBlocking())
+            {
+            PlayerAudio playerAudio = GetComponent<PlayerAudio>();
+            if (playerAudio != null)
+                playerAudio.BlockAudio();
             Debug.Log($"{gameObject.name} tried to deal damage, but player is blocking!");
-            return;
+                return;
+            }
+
+            Health -= damageAmount;
+            if (HealthBar != null)
+                HealthBar.UpdateHealthBar(Health, Maxhealth);
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerAudio playerAudio = GetComponent<PlayerAudio>();
+            if (playerAudio != null)
+                playerAudio.HitAudio();
         }
-
-        Health -= damageAmount;
-        if (HealthBar != null)
-            HealthBar.UpdateHealthBar(Health, Maxhealth);
-
-        if (Health <= 0)
-            Die();
+            if (Health <= 0)
+                Die();
+        
     }
 
     public void Die()
     {
         if (isDead) return;
         isDead = true;
-        KillManager.Instance?.AddKill();
-        if (KillManager.Instance == null)
-            Debug.Log("No killmanager found");
+        deathAudio.pitch = Random.Range(0.8f, 1.2f);
+        deathAudio.Play();
+        Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
+        KillManager.Instance?.AddKill(transform.position);
         gameObject.tag = "Untagged";
         gameObject.layer = LayerMask.NameToLayer("Default");
         if (capsuleCollider != null)
@@ -63,7 +75,6 @@ public class EnemyHealth : MonoBehaviour
         int randomDeath = Random.Range(0, 3);
         animator.SetInteger("DeathIndex", randomDeath);
         Debug.Log($"{gameObject.name} has died.");
-
         if (behaviorGraph != null)
         {
             behaviorGraph.enabled = false;

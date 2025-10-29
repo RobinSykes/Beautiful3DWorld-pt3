@@ -1,0 +1,20 @@
+:root {
+}
+
+.button {
+    justify-content: flex-start;
+    align-self: flex-start;
+    align-items: auto;
+    font-size: 40px;
+    -unity-font-style: bold;
+    color: rgb(164, 0, 0);
+    text-shadow: 1px 1px 0 rgba(140, 1, 1, 0);
+    background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.35s;
+    scale: 1 1;
+}
+
+.button:hover {
+    scale: 1.1 1.1;
+    color: rgb(125, 0, 0);
+}

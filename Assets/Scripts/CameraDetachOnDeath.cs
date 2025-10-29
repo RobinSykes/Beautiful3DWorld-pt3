@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class CameraDetachOnDeath : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class CameraDetachOnDeath : MonoBehaviour
     [Header("Settings")]
     public string deathAnimationName = "IsDead"; // exact name of the death animation state
     public float pauseDelay = 5f; // seconds after death before pause
-
     private bool triggered = false;
     private bool animatorLocked = false;
+    public AudioSource gameMusic; // Assign the AudioSource from GameManager
 
     void Start()
     {
@@ -31,7 +32,6 @@ public class CameraDetachOnDeath : MonoBehaviour
 
         if (playerHealth == null)
             Debug.LogError("CameraDetachOnDeath: PlayerHealth reference missing!");
-
         // Auto-find camera follow script
         if (cameraFollowScript == null)
             cameraFollowScript = GetComponent<MonoBehaviour>();
@@ -119,7 +119,9 @@ public class CameraDetachOnDeath : MonoBehaviour
     public void Die()
     {
         // ... existing death logic ...
-
+        // Stop game music
+        if (gameMusic != null)
+            gameMusic.Stop();
         // Trigger the UI overlay
         YouDiedUIOverlay overlay = FindFirstObjectByType<YouDiedUIOverlay>();
         if (overlay != null)

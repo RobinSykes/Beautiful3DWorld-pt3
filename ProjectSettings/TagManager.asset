@@ -8,6 +8,9 @@ TagManager:
   - CinemachineTarget
   - Enemy
   - PlayerParent
+  - fogBoundary
+  - GameManager
+  - Boss
   layers:
   - Default
   - TransparentFX

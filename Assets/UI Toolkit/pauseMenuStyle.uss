@@ -1,0 +1,23 @@
+:root {
+}
+
+.button:hover {
+    scale: 1.1 1.1;
+    background-color: rgba(111, 0, 0, 0);
+}
+
+.button {
+    align-self: flex-start;
+    bottom: 0;
+    position: absolute;
+    font-size: 40px;
+    -unity-font-style: bold;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    scale: 1 1;
+    color: rgb(190, 0, 0);
+    transition-duration: 0.35s;
+}

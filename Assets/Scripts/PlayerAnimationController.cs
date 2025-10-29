@@ -8,9 +8,10 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackDamage = 25f;
     [SerializeField] private LayerMask enemyLayer;
-
     private float nextAttackTime = 0f;
     private bool isBlocking = false;
+    public PlayerAudio playerAudio; // drag & drop in Inspector
+
 
     void Awake()
     {
@@ -55,6 +56,7 @@ public class PlayerAnimationController : MonoBehaviour
 
         animator.SetTrigger(triggerName);
         Debug.Log($"Triggered {triggerName}");
+        playerAudio.AttackAudio();
     }
 
     private IEnumerator DelayedDamage(float delay)

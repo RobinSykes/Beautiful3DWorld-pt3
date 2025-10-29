@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Spawn Settings")]
     [SerializeField] private Transform player;
-    [SerializeField] private float minSpawnDistance;
+    [SerializeField] private float minSpawnDistance = 25f;
     [SerializeField] private float maxSpawnDistance = 150f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float minSpawnHeight = 25f;
@@ -27,9 +27,11 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        ApplyDifficultySettings(); // Apply difficulty scaling
+
         if (player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
             if (player == null)
             {
@@ -46,6 +48,32 @@ public class EnemySpawner : MonoBehaviour
     {
         CheckEnemyDistance();
         CheckForDeadEnemies();
+    }
+
+    // Apply difficulty-based enemy limits
+    private void ApplyDifficultySettings()
+    {
+        Difficulty difficulty = SettingsData.CurrentDifficulty;
+
+        switch (difficulty)
+        {
+            case Difficulty.Easy:
+                totalEnemies = 16;
+                maxPerType = 4;
+                break;
+
+            case Difficulty.Medium:
+                totalEnemies = 24;
+                maxPerType = 6;
+                break;
+
+            case Difficulty.Hard:
+                totalEnemies = 32;
+                maxPerType = 8;
+                break;
+        }
+
+        Debug.Log($"[EnemySpawner] Difficulty: {difficulty}, TotalEnemies: {totalEnemies}, MaxPerType: {maxPerType}");
     }
 
     private void SpawnEnemies()
@@ -65,7 +93,8 @@ public class EnemySpawner : MonoBehaviour
                 continue;
 
             Vector3 spawnPos = GetValidGroundPosition();
-            if (spawnPos == Vector3.zero) continue; // skip invalid
+            if (spawnPos == Vector3.zero)
+                continue;
 
             GameObject newEnemy = Instantiate(enemyPrefabs[enemyType], spawnPos, Quaternion.identity);
             spawnedEnemies.Add(newEnemy);
@@ -78,7 +107,6 @@ public class EnemySpawner : MonoBehaviour
 
     private Vector3 GetValidGroundPosition()
     {
-        // Attempt several times to find a valid height
         for (int i = 0; i < 10; i++)
         {
             float angle = Random.Range(0f, 360f);
@@ -89,14 +117,12 @@ public class EnemySpawner : MonoBehaviour
             if (Physics.Raycast(spawnPos + Vector3.up * 100f, Vector3.down, out RaycastHit hit, 300f, groundLayer))
             {
                 if (hit.point.y >= minSpawnHeight)
-                {
-                    return hit.point; // valid spawn
-                }
+                    return hit.point;
             }
         }
 
         Debug.LogWarning("Failed to find valid spawn height above " + minSpawnHeight);
-        return Vector3.zero; // invalid position
+        return Vector3.zero;
     }
 
     private void CheckEnemyDistance()
@@ -163,7 +189,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Vector3 spawnPos = GetValidGroundPosition();
-        if (spawnPos == Vector3.zero) yield break; // failed
+        if (spawnPos == Vector3.zero) yield break;
 
         GameObject newEnemy = Instantiate(enemyPrefabs[enemyType], spawnPos, Quaternion.identity);
         spawnedEnemies.Add(newEnemy);

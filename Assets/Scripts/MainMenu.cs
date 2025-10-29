@@ -38,8 +38,17 @@ public class MainMenu : MonoBehaviour
 
     private void Play()
     {
-        // Always reload MainWorld scene fresh
+        // Destroy existing GameManager before reloading scene
+        GameObject existingManager = GameObject.Find("GameManager");
+        if (existingManager != null)
+        {
+            Destroy(existingManager);
+            Debug.Log("Old GameManager destroyed before scene reload.");
+        }
+
+        // Reload MainWorld fresh
         SceneManager.LoadScene("MainWorld", LoadSceneMode.Single);
         Debug.Log("Playing MainWorld - scene reset");
     }
+
 }
