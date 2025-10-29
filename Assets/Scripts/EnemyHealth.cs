@@ -7,8 +7,7 @@ public class EnemyHealth : MonoBehaviour
     public float Health = 100;
     public float Maxhealth = 100;
     public Animator animator;
-    [SerializeField] public FloatingHealthBar HealthBar;
-
+    public FloatingHealthBar HealthBar;
     private BehaviorGraphAgent behaviorGraph;
     private bool isDead = false;
     public bool IsDead => isDead;
@@ -44,8 +43,16 @@ public class EnemyHealth : MonoBehaviour
             Debug.Log($"{gameObject.name} tried to deal damage, but player is blocking!");
                 return;
             }
+            if (gameObject.CompareTag("Player"))
+            {
+                PlayerAnimationController playerAnimationController = gameObject.GetComponent<PlayerAnimationController>();
+                if (playerAnimationController != null)
+                {
+                    playerAnimationController.PlayBloodParticle();
+                }
+            }
 
-            Health -= damageAmount;
+        Health -= damageAmount;
             if (HealthBar != null)
                 HealthBar.UpdateHealthBar(Health, Maxhealth);
         if (gameObject.CompareTag("Player"))

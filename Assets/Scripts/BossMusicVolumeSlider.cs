@@ -24,6 +24,28 @@ public class BossMusicVolumeSlider : MonoBehaviour
         if (bossMusicSource != null)
             bossMusicSource.volume = savedVolume;
     }
+    private void Update()
+    {
+        if (bossMusicSource == null)
+        {
+            // Try to find the boss again if it appeared later
+            var boss = GameObject.FindWithTag("Boss");
+            if (boss != null)
+            {
+                bossMusicSource = boss.GetComponent<AudioSource>();
+                if (bossMusicSource != null)
+                {
+                    bossMusicSource.volume = savedVolume;
+                    Debug.Log("BossMusicVolume reapplied to new AudioSource");
+                }
+            }
+        }
+        else if (!Mathf.Approximately(bossMusicSource.volume, savedVolume))
+        {
+            // Reapply saved volume if it got reset somehow
+            bossMusicSource.volume = savedVolume;
+        }
+    }
 
     private void OnEnable()
     {

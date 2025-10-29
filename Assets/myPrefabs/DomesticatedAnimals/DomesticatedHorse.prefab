@@ -776,8 +776,8 @@ GameObject:
   - component: {fileID: 4860915825817799591}
   - component: {fileID: 5175072023651438579}
   - component: {fileID: 5826045119588991076}
-  - component: {fileID: 7889898757851309717}
   - component: {fileID: 2698795627387661241}
+  - component: {fileID: 2268952742490975055}
   m_Layer: 10
   m_Name: DomesticatedHorse
   m_TagString: Untagged
@@ -883,8 +883,23 @@ MonoBehaviour:
           m_Value1: 13975120238218316562
         Name: New Random Points In Box Collider
         m_Value: {fileID: 0}
---- !u!64 &7889898757851309717
-MeshCollider:
+--- !u!114 &2698795627387661241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926096571310058996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af049e326dee78a428c0bd6abb974f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  Maxhealth: 100
+  HealthBar: {fileID: 0}
+--- !u!65 &2268952742490975055
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -901,25 +916,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &2698795627387661241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3926096571310058996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af049e326dee78a428c0bd6abb974f7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 100
-  Maxhealth: 100
-  HealthBar: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.51198673, y: 1.17757, z: 1.5341358}
+  m_Center: {x: -0.006711483, y: 0.623529, z: 0.00025844574}
 --- !u!1 &3953092017728341530
 GameObject:
   m_ObjectHideFlags: 0

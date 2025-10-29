@@ -6,6 +6,7 @@ public class PlayerAudio : MonoBehaviour
      public AudioSource attackAudio;
      public AudioSource hitAudio;
      public AudioSource blockAudio;
+     public GameObject pauseMenu;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +19,13 @@ public class PlayerAudio : MonoBehaviour
 
     public void AttackAudio()
     {
+        // Prevent playing sound if game is paused or pause menu is open
+        if (pauseMenu != null && pauseMenu.activeSelf)
+        {
+            Debug.Log("Attack sound blocked — game is paused.");
+            return;
+        }
+
         Debug.Log("Attack Sound");
         if (attackAudio != null)
         {
@@ -26,6 +34,7 @@ public class PlayerAudio : MonoBehaviour
             Debug.Log($"Attack sound played with pitch {attackAudio.pitch}");
         }
     }
+
     public void HitAudio() 
     {
         if (hitAudio != null) 

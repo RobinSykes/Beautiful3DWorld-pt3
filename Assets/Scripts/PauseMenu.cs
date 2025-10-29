@@ -46,7 +46,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (pauseMenuUI != null)
             pauseMenuUI.SetActive(true);
-
         Time.timeScale = 0f; // Freeze game
         UnityEngine.Cursor.visible = true;
         UnityEngine.Cursor.lockState = CursorLockMode.None; // Unlock cursor

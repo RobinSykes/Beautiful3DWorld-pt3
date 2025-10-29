@@ -912,7 +912,7 @@ MonoBehaviour:
   Maxhealth: 500
   animator: {fileID: 0}
   HealthBar: {fileID: 0}
-  PlayerAudio: {fileID: 0}
+  deathAudio: {fileID: 0}
 --- !u!195 &2745894605020677397
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1034,7 +1034,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 5de51a8b81ff4524685def47929a124a, type: 3}
   m_Resource: {fileID: 8300000, guid: 5de51a8b81ff4524685def47929a124a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.986
   m_Pitch: 1
   Loop: 1
   Mute: 0

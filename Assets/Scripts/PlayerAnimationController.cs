@@ -8,6 +8,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackDamage = 25f;
     [SerializeField] private LayerMask enemyLayer;
+    public ParticleSystem bloodParticle;
     private float nextAttackTime = 0f;
     private bool isBlocking = false;
     public PlayerAudio playerAudio; // drag & drop in Inspector
@@ -93,6 +94,10 @@ public class PlayerAnimationController : MonoBehaviour
                 Debug.Log($"Dealt {attackDamage} damage to {enemy.name}");
             }
         }
+    }
+    public void PlayBloodParticle()
+    {
+       bloodParticle.Play();
     }
 
     public bool IsBlocking()

@@ -141,8 +141,8 @@ GameObject:
   - component: {fileID: 6140051029029875249}
   - component: {fileID: 2859415067254408125}
   - component: {fileID: 7991642074278401706}
-  - component: {fileID: 6045150264422241609}
   - component: {fileID: 2510996463571587149}
+  - component: {fileID: 24281481008693739}
   m_Layer: 10
   m_Name: DomesticatedDog
   m_TagString: Untagged
@@ -248,8 +248,23 @@ MonoBehaviour:
           m_Value1: 13975120238218316562
         Name: New Random Points In Box Collider
         m_Value: {fileID: 0}
---- !u!64 &6045150264422241609
-MeshCollider:
+--- !u!114 &2510996463571587149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331024369225096069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af049e326dee78a428c0bd6abb974f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 50
+  Maxhealth: 50
+  HealthBar: {fileID: 0}
+--- !u!65 &24281481008693739
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -266,25 +281,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &2510996463571587149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331024369225096069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af049e326dee78a428c0bd6abb974f7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 50
-  Maxhealth: 50
-  HealthBar: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.2641611, y: 0.48898947, z: 1}
+  m_Center: {x: 0.0051960945, y: 0.28342396, z: 0}
 --- !u!1 &1411468858047301558
 GameObject:
   m_ObjectHideFlags: 0
