@@ -7,12 +7,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d3f36917d012e4439ea643f50b4b265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSmokeEffect: {fileID: 198426734445453958, guid: 3b89a0b81c18f8548ae1e630445434b9, type: 3}
+  attackSmokeEffect: {fileID: 0}
 --- !u!1102 &-7005100882821310437
 AnimatorState:
   serializedVersion: 6
