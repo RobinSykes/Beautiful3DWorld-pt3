@@ -13,6 +13,7 @@ public class EnemyHealth : MonoBehaviour
     public bool IsDead => isDead;
     public ParticleSystem skeletonHit;
     public ParticleSystem villagerHit;
+    public ParticleSystem bossHit;
     private CapsuleCollider capsuleCollider;
     public AudioSource deathAudio;
     public AudioSource bossAudio;
@@ -31,6 +32,10 @@ public class EnemyHealth : MonoBehaviour
             deathAudio = GetComponentInChildren<AudioSource>();
         }
         if (gameObject.CompareTag("Player"))
+        {
+            deathAudio = GetComponentInChildren<AudioSource>();
+        }
+        if (gameObject.CompareTag("Arena"))
         {
             deathAudio = GetComponentInChildren<AudioSource>();
         }
@@ -71,6 +76,10 @@ public class EnemyHealth : MonoBehaviour
             {
                 skeletonHit.Play();
             }
+            if (gameObject.CompareTag("Boss"))
+            {
+                bossHit.Play();
+            }
 
         Health -= damageAmount;
             if (HealthBar != null)
@@ -90,9 +99,6 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        deathAudio.pitch = Random.Range(0.8f, 1.2f);
-        deathAudio.Play();
-        Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
         KillManager.Instance?.AddKill(transform.position);
         if (capsuleCollider != null)
             capsuleCollider.enabled = false;
@@ -104,6 +110,9 @@ public class EnemyHealth : MonoBehaviour
         {
             gameObject.tag = "Untagged";
             gameObject.layer = LayerMask.NameToLayer("Default");
+            deathAudio.pitch = Random.Range(0.8f, 1.2f);
+            deathAudio.Play();
+            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
             if (behaviorGraph != null)
             {
                 behaviorGraph.enabled = false;
@@ -125,6 +134,9 @@ public class EnemyHealth : MonoBehaviour
         {
             gameObject.tag = "Untagged";
             gameObject.layer = LayerMask.NameToLayer("Default");
+            deathAudio.pitch = Random.Range(0.8f, 1.2f);
+            deathAudio.Play();
+            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
             if (behaviorGraph != null)
             {
                 behaviorGraph.enabled = false;
@@ -146,6 +158,9 @@ public class EnemyHealth : MonoBehaviour
         {
             gameObject.tag = "Untagged";
             gameObject.layer = LayerMask.NameToLayer("Default");
+            deathAudio.pitch = Random.Range(0.8f, 1.2f);
+            deathAudio.Play();
+            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
             if (HealthBar != null)
             {
                 HealthBar.gameObject.SetActive(false);
