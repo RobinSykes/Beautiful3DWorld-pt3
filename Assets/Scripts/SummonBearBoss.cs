@@ -22,6 +22,7 @@ public class SummonBearBoss : MonoBehaviour
         Debug.Log("[SummonBearBoss] SpawnBearBoss triggered.");
         SummonBoss.SetActive(false);
         StartCoroutine(TeleportSequence());
+        FindFirstObjectByType<BackgroundMusicManager>()?.StopForBossSummon();
     }
 
     private IEnumerator TeleportSequence()
@@ -203,5 +204,10 @@ public class SummonBearBoss : MonoBehaviour
         }
 
         SummonBossText.alpha = 0f;
+    }
+    public void OnBossDefeated()
+    {
+        //var bgMusic = FindFirstObjectByType<BackgroundMusicManager>();
+        //bgMusic?.ResumeAfterBoss();
     }
 }

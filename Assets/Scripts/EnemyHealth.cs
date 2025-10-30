@@ -15,14 +15,25 @@ public class EnemyHealth : MonoBehaviour
     public ParticleSystem villagerHit;
     private CapsuleCollider capsuleCollider;
     public AudioSource deathAudio;
-
+    public AudioSource bossAudio;
     private void Awake()
     {
         HealthBar = GetComponentInChildren<FloatingHealthBar>();
         animator = GetComponentInChildren<Animator>();
         behaviorGraph = GetComponent<BehaviorGraphAgent>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        deathAudio = GetComponentInChildren<AudioSource>();
+        if (gameObject.CompareTag("Villager"))
+        {
+            deathAudio = GetComponentInChildren<AudioSource>();
+        }
+        if (gameObject.CompareTag("Enemy"))
+        {
+            deathAudio = GetComponentInChildren<AudioSource>();
+        }
+        if (gameObject.CompareTag("Player"))
+        {
+            deathAudio = GetComponentInChildren<AudioSource>();
+        }
     }
 
     void Start()
@@ -146,13 +157,42 @@ public class EnemyHealth : MonoBehaviour
                 animator.SetBool("Dead", true);
                 StartCoroutine(SinkPlayerIntoGround(2f, 2f));
         }
+        if (gameObject.CompareTag("Boss"))
+        {
+            gameObject.tag = "Untagged";
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            if (behaviorGraph != null)
+            {
+                behaviorGraph.enabled = false;
+                Debug.Log("Behavior graph disabled on death.");
+            }
 
+            if (HealthBar != null)
+            {
+                HealthBar.gameObject.SetActive(false);
+                Debug.Log("Health bar hidden on death.");
+            }
+            if (animator != null)
+                animator.SetTrigger("IsDead");
+            if (bossAudio != null)
+            {
+                bossAudio.enabled = false;
+                Debug.Log("Boss music turning off .");
+            }
+            StartCoroutine(HandleDeathSequence(3f));
+            // ?? Tell the SummonBearBoss script that the boss has died
+            SummonBearBoss bossManager = FindFirstObjectByType<SummonBearBoss>();
+            if (bossManager != null)
+            {
+                bossManager.OnBossDefeated();
+            }
+        }
     }
-    private IEnumerator HandleDeathSequence()
+    private IEnumerator HandleDeathSequence(float extraDelay = 0f)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3f + extraDelay);
         yield return StartCoroutine(SinkIntoGround(2f, 2f));
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(6f);
         Destroy(gameObject);
     }
 
