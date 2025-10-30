@@ -8,7 +8,7 @@ public partial class IsdeadCondition : Condition
 {
     [SerializeReference] public BlackboardVariable<GameObject> Target;
     [Comparison(comparisonType: ComparisonType.Boolean)]
-    [SerializeReference] public BlackboardVariable<ConditionOperator> Dead;
+    [SerializeReference] public BlackboardVariable<ConditionOperator> IsDead;
 
     public override bool IsTrue()
     {
