@@ -207,7 +207,7 @@ public class SummonBearBoss : MonoBehaviour
     }
     public void OnBossDefeated()
     {
-        //var bgMusic = FindFirstObjectByType<BackgroundMusicManager>();
-        //bgMusic?.ResumeAfterBoss();
+        var bgMusic = FindFirstObjectByType<BackgroundMusicManager>();
+        bgMusic?.ResumeAfterBoss();
     }
 }

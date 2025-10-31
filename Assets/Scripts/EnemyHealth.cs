@@ -4,243 +4,192 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float Health = 100;
-    public float Maxhealth = 100;
+    [Header("Stats")]
+    public float Health = 100f;
+    public float Maxhealth = 100f;
+
+    [Header("References")]
     public Animator animator;
     public FloatingHealthBar HealthBar;
+    public ParticleSystem skeletonHit, villagerHit, bossHit;
+    public AudioSource deathAudio, bossAudio;
+
     private BehaviorGraphAgent behaviorGraph;
-    private bool isDead = false;
-    public bool IsDead => isDead;
-    public ParticleSystem skeletonHit;
-    public ParticleSystem villagerHit;
-    public ParticleSystem bossHit;
     private CapsuleCollider capsuleCollider;
-    public AudioSource deathAudio;
-    public AudioSource bossAudio;
+    private bool isDead;
+
+    public bool IsDead => isDead;
+
     private void Awake()
     {
         HealthBar = GetComponentInChildren<FloatingHealthBar>();
         animator = GetComponentInChildren<Animator>();
         behaviorGraph = GetComponent<BehaviorGraphAgent>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        if (gameObject.CompareTag("Villager"))
-        {
-            deathAudio = GetComponentInChildren<AudioSource>();
-        }
-        if (gameObject.CompareTag("Enemy"))
-        {
-            deathAudio = GetComponentInChildren<AudioSource>();
-        }
-        if (gameObject.CompareTag("Player"))
-        {
-            deathAudio = GetComponentInChildren<AudioSource>();
-        }
-        if (gameObject.CompareTag("Arena"))
-        {
-            deathAudio = GetComponentInChildren<AudioSource>();
-        }
+        deathAudio = GetComponentInChildren<AudioSource>();
     }
 
-    void Start()
+    private void Start()
     {
-        if (HealthBar != null)
-            HealthBar.UpdateHealthBar(Health, Maxhealth);
+        HealthBar?.UpdateHealthBar(Health, Maxhealth);
     }
 
     public void TakeDamage(float damageAmount)
     {
-            
-            if (isDead) return;
-            PlayerAnimationController player = Object.FindFirstObjectByType<PlayerAnimationController>();
-            if (player != null && player.IsBlocking())
-            {
-            PlayerAudio playerAudio = GetComponent<PlayerAudio>();
-            if (playerAudio != null)
-                playerAudio.BlockAudio();
-            Debug.Log($"{gameObject.name} tried to deal damage, but player is blocking!");
-                return;
-            }
-            if (gameObject.CompareTag("Player"))
-            {
-                PlayerAnimationController playerAnimationController = gameObject.GetComponent<PlayerAnimationController>();
-                if (playerAnimationController != null)
-                {
-                    playerAnimationController.PlayBloodParticle();
-                }
-            }
-            if (gameObject.CompareTag("Villager"))
-            {
-                villagerHit.Play();
-            } 
-            if (gameObject.CompareTag("Enemy"))
-            {
-                skeletonHit.Play();
-            }
-            if (gameObject.CompareTag("Boss"))
-            {
-                bossHit.Play();
-            }
+        if (isDead) return;
 
-        Health -= damageAmount;
-            if (HealthBar != null)
-                HealthBar.UpdateHealthBar(Health, Maxhealth);
-        if (gameObject.CompareTag("Player"))
+        // ?? Block check
+        var playerController = FindFirstObjectByType<PlayerAnimationController>();
+        if (playerController != null && playerController.IsBlocking())
         {
-            PlayerAudio playerAudio = GetComponent<PlayerAudio>();
-            if (playerAudio != null)
-                playerAudio.HitAudio();
+            GetComponent<PlayerAudio>()?.BlockAudio();
+            Debug.Log($"{gameObject.name} tried to deal damage, but player is blocking!");
+            return;
         }
-            if (Health <= 0)
-                Die();
-        
+
+        // ?? Hit effects by tag
+        switch (tag)
+        {
+            case "Player":
+                GetComponent<PlayerAnimationController>()?.PlayBloodParticle();
+                break;
+            case "Villager":
+                villagerHit?.Play();
+                break;
+            case "Enemy":
+                skeletonHit?.Play();
+                break;
+            case "Boss":
+                bossHit?.Play();
+                break;
+        }
+
+        // ?? Damage
+        Health -= damageAmount;
+        HealthBar?.UpdateHealthBar(Health, Maxhealth);
+
+        // ?? Player hit feedback
+        if (CompareTag("Player"))
+        {
+            var playerAudio = GetComponent<PlayerAudio>();
+            playerAudio?.HitAudio();
+
+            GameObject boss = GameObject.FindWithTag("Boss");
+            if (boss && Vector3.Distance(transform.position, boss.transform.position) <= 20f)
+            {
+                playerAudio?.HitByBoss();
+                Debug.Log("Player hit by boss (within 20f).");
+            }
+        }
+
+        if (Health <= 0) Die();
     }
 
-    public void Die()
+    private void Die()
     {
         if (isDead) return;
         isDead = true;
         KillManager.Instance?.AddKill(transform.position);
-        if (capsuleCollider != null)
-            capsuleCollider.enabled = false;
+        capsuleCollider.enabled = false;
 
-        int randomDeath = Random.Range(0, 3);
-        animator.SetInteger("DeathIndex", randomDeath);
+        animator.SetInteger("DeathIndex", Random.Range(0, 3));
         Debug.Log($"{gameObject.name} has died.");
-        if (gameObject.CompareTag("Villager"))
+
+        HealthBar?.gameObject.SetActive(false);
+        if (behaviorGraph) behaviorGraph.enabled = false;
+
+
+        switch (tag)
         {
-            gameObject.tag = "Untagged";
-            gameObject.layer = LayerMask.NameToLayer("Default");
-            deathAudio.pitch = Random.Range(0.8f, 1.2f);
-            deathAudio.Play();
-            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
-            if (behaviorGraph != null)
-            {
-                behaviorGraph.enabled = false;
-                Debug.Log("Behavior graph disabled on death.");
-            }
-
-            if (HealthBar != null)
-            {
-                HealthBar.gameObject.SetActive(false);
-                Debug.Log("Health bar hidden on death.");
-            }
-
-            if (animator != null)
+            case "Villager":
+            case "Enemy":
+                PlayDeathAudio();
                 animator.SetTrigger("IsDead");
+                StartCoroutine(HandleDeathSequence());
+                break;
 
-            StartCoroutine(HandleDeathSequence());
-        }
-        if (gameObject.CompareTag("Enemy"))
-        {
-            gameObject.tag = "Untagged";
-            gameObject.layer = LayerMask.NameToLayer("Default");
-            deathAudio.pitch = Random.Range(0.8f, 1.2f);
-            deathAudio.Play();
-            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
-            if (behaviorGraph != null)
-            {
-                behaviorGraph.enabled = false;
-                Debug.Log("Behavior graph disabled on death.");
-            }
-
-            if (HealthBar != null)
-            {
-                HealthBar.gameObject.SetActive(false);
-                Debug.Log("Health bar hidden on death.");
-            }
-
-            if (animator != null)
-                animator.SetTrigger("IsDead");
-
-            StartCoroutine(HandleDeathSequence());
-        }
-        if (gameObject.CompareTag("Player"))
-        {
-            gameObject.tag = "Untagged";
-            gameObject.layer = LayerMask.NameToLayer("Default");
-            deathAudio.pitch = Random.Range(0.8f, 1.2f);
-            deathAudio.Play();
-            Debug.Log($"Deathaudio played with pitch {deathAudio.pitch}");
-            if (HealthBar != null)
-            {
-                HealthBar.gameObject.SetActive(false);
-                Debug.Log("Health bar hidden on death.");
-            }
-
-            if (animator != null)
+            case "Player":
+                PlayDeathAudio();
                 animator.SetTrigger("IsDead");
                 animator.SetBool("Dead", true);
                 StartCoroutine(SinkPlayerIntoGround(2f, 2f));
-        }
-        if (gameObject.CompareTag("Boss"))
-        {
-            gameObject.tag = "Untagged";
-            gameObject.layer = LayerMask.NameToLayer("Default");
-            if (behaviorGraph != null)
-            {
-                behaviorGraph.enabled = false;
-                Debug.Log("Behavior graph disabled on death.");
-            }
+                break;
 
-            if (HealthBar != null)
-            {
-                HealthBar.gameObject.SetActive(false);
-                Debug.Log("Health bar hidden on death.");
-            }
-            if (animator != null)
+            case "Boss":
                 animator.SetTrigger("IsDead");
-            if (bossAudio != null)
+                if (bossAudio) StartCoroutine(FadeOutBossAudio(bossAudio, 1.5f));
+                EnableBearDefeat();
+                StartCoroutine(HandleDeathSequence(2f));
+                break;
+        }
+        gameObject.tag = "Untagged";
+        gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+
+    private void PlayDeathAudio()
+    {
+        if (!deathAudio) return;
+        deathAudio.pitch = Random.Range(0.8f, 1.2f);
+        deathAudio.Play();
+        Debug.Log($"Death audio played with pitch {deathAudio.pitch}");
+    }
+
+    private void EnableBearDefeat()
+    {
+        var gm = GameObject.FindWithTag("GameManager");
+        if (gm != null)
+        {
+            var bearDefeat = gm.GetComponent<MonsterBearDefeat>();
+            if (bearDefeat != null)
             {
-                bossAudio.enabled = false;
-                Debug.Log("Boss music turning off .");
-            }
-            StartCoroutine(HandleDeathSequence(3f));
-            // ?? Tell the SummonBearBoss script that the boss has died
-            SummonBearBoss bossManager = FindFirstObjectByType<SummonBearBoss>();
-            if (bossManager != null)
-            {
-                bossManager.OnBossDefeated();
+                bearDefeat.enabled = true;  // ? assign, not call as method
+                Debug.Log("MonsterBearDefeat enabled.");
             }
         }
     }
+
+
+    private IEnumerator FadeOutBossAudio(AudioSource source, float duration)
+    {
+        float startVol = source.volume, time = 0f;
+        while (time < duration)
+        {
+            if (!source) yield break;
+            source.volume = Mathf.Lerp(startVol, 0f, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        source.Stop();
+        yield return new WaitForSeconds(1f);
+        FindFirstObjectByType<SummonBearBoss>()?.OnBossDefeated();
+    }
+
     private IEnumerator HandleDeathSequence(float extraDelay = 0f)
     {
         yield return new WaitForSeconds(3f + extraDelay);
-        yield return StartCoroutine(SinkIntoGround(2f, 2f));
-        yield return new WaitForSeconds(6f);
+        yield return SinkIntoGround(2f, 2f);
+        yield return new WaitForSeconds(7f);
         Destroy(gameObject);
     }
 
     private IEnumerator SinkIntoGround(float duration, float distance)
     {
-        float elapsed = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 endPos = startPos - new Vector3(0, distance, 0);
-
-        while (elapsed < duration)
+        float time = 0f;
+        Vector3 start = transform.position, end = start - new Vector3(0, distance, 0);
+        while (time < duration)
         {
-            transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
-            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(start, end, time / duration);
+            time += Time.deltaTime;
             yield return null;
         }
-
-        transform.position = endPos;
+        transform.position = end;
         Destroy(gameObject);
     }
+
     private IEnumerator SinkPlayerIntoGround(float duration, float distance)
     {
         yield return new WaitForSeconds(3f);
-        float elapsed = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 endPos = startPos - new Vector3(0, distance, 0);
-
-        while (elapsed < duration)
-        {
-            transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.position = endPos;
+        yield return SinkIntoGround(duration, distance);
     }
 }

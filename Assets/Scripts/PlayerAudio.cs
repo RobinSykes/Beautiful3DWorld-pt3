@@ -6,6 +6,7 @@ public class PlayerAudio : MonoBehaviour
      public AudioSource attackAudio;
      public AudioSource hitAudio;
      public AudioSource blockAudio;
+    public AudioSource hitByBossAudio;
      public GameObject pauseMenu;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,5 +54,11 @@ public class PlayerAudio : MonoBehaviour
             blockAudio.Play();
             Debug.Log($"Block sound played with pitch{blockAudio.pitch}");
         }
+    }
+    public void HitByBoss()
+    {
+        hitByBossAudio.pitch = Random.Range(0.8f, 1.2f);
+        hitByBossAudio.Play();
+        Debug.Log($"HitByBoss sound played with pitch{hitByBossAudio.pitch}");
     }
 }

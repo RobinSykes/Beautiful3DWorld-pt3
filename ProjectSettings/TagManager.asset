@@ -15,6 +15,7 @@ TagManager:
   - Villager
   - BackGroundMusicManager
   - Arena
+  - BossHitAudio
   layers:
   - Default
   - TransparentFX

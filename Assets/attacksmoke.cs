@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class attacksmoke : StateMachineBehaviour
+public class Attacksmoke : StateMachineBehaviour
 {
     public ParticleSystem attackSmokeEffect; // assign in inspector or dynamically
 
