@@ -3175,6 +3175,7 @@ GameObject:
   - component: {fileID: 277215051}
   - component: {fileID: 277215052}
   - component: {fileID: 277215053}
+  - component: {fileID: 277215054}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -3226,7 +3227,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277215038}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c294df0e2835db478975aeb9c48cea7, type: 3}
   m_Name: 
@@ -3240,7 +3241,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277215038}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a7abb87e49c13f4caf987ed3fa66ff8, type: 3}
   m_Name: 
@@ -3556,7 +3557,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277215038}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3613ae67e5b0137449782d5447349c5a, type: 3}
   m_Name: 
@@ -3595,6 +3596,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossBearDefeated: {fileID: 277215053}
   fadeInDuration: 1.5
+  uiDocument: {fileID: 956706392}
+  endgame: {fileID: 956706391}
+  animator: {fileID: 5777780408074969366}
 --- !u!82 &277215053
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3692,6 +3696,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &277215054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277215038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54181f0ca3e8d6944833d9bc8e2394da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &286650805
 GameObject:
   m_ObjectHideFlags: 0
@@ -11949,7 +11965,7 @@ Transform:
   m_GameObject: {fileID: 532939999}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 566.5, y: 98.1, z: 808.9}
+  m_LocalPosition: {x: 520.5, y: 44.5, z: 693.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16666,6 +16682,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948429487}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &956706391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 956706393}
+  - component: {fileID: 956706392}
+  m_Layer: 0
+  m_Name: EndGameMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &956706392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956706391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 6ac6c769c67a63a45a6974b207854a0b, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 27d6f8b42491f3f4b83ed3321d8dfc02, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+--- !u!4 &956706393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956706391}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 473.05164, y: 94.31596, z: 862.26373}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &958042780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20155,6 +20222,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1418590241}
     m_Modifications:
+    - target: {fileID: 521798497552523971, guid: 15ca4494f24bf9741a48b37ec2c4c632, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2629182449500102118, guid: 15ca4494f24bf9741a48b37ec2c4c632, type: 3}
       propertyPath: m_Name
       value: Dog_001
@@ -20235,7 +20306,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2629182449500102118, guid: 15ca4494f24bf9741a48b37ec2c4c632, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1547509316}
   m_SourcePrefab: {fileID: 100100000, guid: 15ca4494f24bf9741a48b37ec2c4c632, type: 3}
 --- !u!1001 &1257663249
 PrefabInstance:
@@ -23707,6 +23781,32 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198498569432132500, guid: 6c86c599d7bf3464eb4506d2584fbe57, type: 3}
   m_PrefabInstance: {fileID: 1042963445}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1547509310 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2629182449500102118, guid: 15ca4494f24bf9741a48b37ec2c4c632, type: 3}
+  m_PrefabInstance: {fileID: 1250561921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1547509316
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547509310}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2641611, y: 0.39851248, z: 1}
+  m_Center: {x: 0.0051960945, y: 0.32866246, z: 0}
 --- !u!1 &1560409556
 GameObject:
   m_ObjectHideFlags: 0
@@ -42943,8 +43043,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243703940283072516, guid: 89ef2123a31ebe547959c299198012c1, type: 2}
-  m_audioClip: {fileID: 8300000, guid: b7b5a6156961bac44a67504d42ce6fcf, type: 3}
-  m_Resource: {fileID: 8300000, guid: b7b5a6156961bac44a67504d42ce6fcf, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d1e6d95360733784ca24fbdd238c8aaa, type: 3}
+  m_Resource: {fileID: 8300000, guid: d1e6d95360733784ca24fbdd238c8aaa, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -46248,3 +46348,4 @@ SceneRoots:
   - {fileID: 76934651}
   - {fileID: 304535106}
   - {fileID: 826050847}
+  - {fileID: 956706393}

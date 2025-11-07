@@ -105,9 +105,29 @@ public class BackgroundMusicManager : MonoBehaviour
         if (index < 0 || index >= musicTracks.Count) return;
 
         musicSource.clip = musicTracks[index];
+        musicSource.volume = 0f; // Start silent
         musicSource.Play();
         Debug.Log($"?? Playing background track: {musicTracks[index].name}");
+
+        // Fade in over 2 seconds
+        StartCoroutine(FadeInMusic(2f));
     }
+
+    private IEnumerator FadeInMusic(float duration)
+    {
+        float targetVolume = PlayerPrefs.GetFloat(VolumeKey, 1f);
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.unscaledDeltaTime;
+            musicSource.volume = Mathf.Lerp(0f, targetVolume, time / duration);
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume; // Ensure final volume is exact
+    }
+
 
     private void NextTrack()
     {

@@ -16,7 +16,8 @@ public class SummonBearBoss : MonoBehaviour
     private float fadeInDuration = 1f;
     private float visibleDuration = 2f;
     private float fadeOutDuration = 1f;
-
+    public static Vector3 lastPlayerPosition;
+    public static Quaternion lastPlayerRotation;
     public void SpawnBearBoss()
     {
         Debug.Log("[SummonBearBoss] SpawnBearBoss triggered.");
@@ -56,7 +57,7 @@ public class SummonBearBoss : MonoBehaviour
         StartCoroutine(SpawnAfterDelay());
     }
 
-    private IEnumerator FadeCanvas(CanvasGroup canvas, float from, float to, float duration)
+    public IEnumerator FadeCanvas(CanvasGroup canvas, float from, float to, float duration)
     {
         float elapsed = 0f;
         canvas.gameObject.SetActive(true);
@@ -84,6 +85,8 @@ public class SummonBearBoss : MonoBehaviour
             Debug.LogWarning("[SummonBearBoss] No player found with tag 'Player'.");
             return;
         }
+        lastPlayerPosition = player.transform.position;
+        lastPlayerRotation = player.transform.rotation;
 
         Transform playerRoot = player.transform;
         if (teleportPlayerArea == null)
@@ -110,7 +113,7 @@ public class SummonBearBoss : MonoBehaviour
         StartCoroutine(ReenableControllers(playerRoot));
     }
 
-    private IEnumerator ReenableControllers(Transform playerRoot)
+    public IEnumerator ReenableControllers(Transform playerRoot)
     {
         yield return new WaitForSeconds(0.1f);
 
