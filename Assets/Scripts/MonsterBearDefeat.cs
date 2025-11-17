@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
-//using UnityEngine.WSA;
-//using ithappy.Animals_FREE;
 using StarterAssets;
+using Unity.VisualScripting;
 
 public class MonsterBearDefeat : MonoBehaviour
 {
@@ -15,19 +14,21 @@ public class MonsterBearDefeat : MonoBehaviour
     private VisualElement endGameMenu;
     public GameObject endgame;
     public Animator animator;
+
     private void OnEnable()
     {
         endgame.SetActive(true);
     }
+
     private void Start()
     {
         endGameMenu = uiDocument.rootVisualElement.Q<VisualElement>("EndGameMenu");
 
-        // ? Get Buttons
+        // Get Buttons
         endGameButton = endGameMenu.Q<Button>("EndGameButton");
         keepPlayingButton = endGameMenu.Q<Button>("KeepPlayingButton");
 
-        // ? Add Click Handlers
+        // Add Click Handlers
         if (endGameButton != null)
             endGameButton.clicked += OnEndGameClicked;
 
@@ -39,7 +40,6 @@ public class MonsterBearDefeat : MonoBehaviour
 
         StartCoroutine(FadeInEndMenu(endGameMenu, fadeInDuration));
     }
-
 
     private IEnumerator FadeInAudio(AudioSource audioSource, float duration)
     {
@@ -62,17 +62,19 @@ public class MonsterBearDefeat : MonoBehaviour
     private IEnumerator FadeInEndMenu(VisualElement menu, float duration)
     {
         yield return new WaitForSeconds(3f);
-        
-        // Show menu first
+
         menu.style.display = DisplayStyle.Flex;
         menu.style.opacity = 0f;
-        //enable cursor 
-        UnityEngine.Cursor.visible = true;                       
+
+        // Enable cursor
+        UnityEngine.Cursor.visible = true;
         UnityEngine.Cursor.lockState = CursorLockMode.None;
-        //disable player movement so they cannot move during end screen
+
+        // Disable player movement
         var controller = FindFirstObjectByType<ThirdPersonController>();
         if (controller != null)
             controller.enabled = false;
+
         var animationController = FindFirstObjectByType<PlayerAnimationController>();
         if (animationController != null)
             animationController.enabled = false;
@@ -81,7 +83,6 @@ public class MonsterBearDefeat : MonoBehaviour
             animator.SetFloat("Speed", 0f);
 
         float elapsed = 0f;
-
         while (elapsed < duration)
         {
             menu.style.opacity = Mathf.Lerp(0f, 1f, elapsed / duration);
@@ -91,6 +92,7 @@ public class MonsterBearDefeat : MonoBehaviour
 
         menu.style.opacity = 1f;
     }
+
     private void OnEndGameClicked()
     {
         Debug.Log("End Game Button Pressed");
@@ -113,9 +115,12 @@ public class MonsterBearDefeat : MonoBehaviour
         var animationController = FindFirstObjectByType<PlayerAnimationController>();
         if (animationController != null)
             animationController.enabled = true;
+
         endgame.SetActive(false);
         StartCoroutine(ReturnPlayerToOriginalPosition());
+        StartCoroutine(RestartEnemySpawner());
     }
+
     private IEnumerator ReturnPlayerToOriginalPosition()
     {
         var summon = FindFirstObjectByType<SummonBearBoss>();
@@ -133,16 +138,13 @@ public class MonsterBearDefeat : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            // Disable movement controllers
-            foreach (var mb in player.GetComponentsInChildren<MonoBehaviour>())
-            {
-                if (mb.GetType().Name.Contains("Controller") || mb.GetType().Name.Contains("Movement"))
-                    mb.enabled = false;
-            }
-            foreach (var cc in player.GetComponentsInChildren<CharacterController>())
-                cc.enabled = false;
+            var tpc = player.GetComponentInChildren<ThirdPersonController>();
+            if (tpc) tpc.enabled = false;
 
-            // ? Restore player original position and rotation
+            var animCtrl = player.GetComponentInChildren<PlayerAnimationController>();
+            if (animCtrl) animCtrl.enabled = false;
+
+            // Restore player position
             player.transform.position = SummonBearBoss.lastPlayerPosition;
             player.transform.rotation = SummonBearBoss.lastPlayerRotation;
 
@@ -154,14 +156,43 @@ public class MonsterBearDefeat : MonoBehaviour
         if (summon.blackoutCanvas != null)
             yield return StartCoroutine(summon.FadeCanvas(summon.blackoutCanvas, 1f, 0f, 0.5f));
 
-        // Hide end screen UI and lock cursor
+        // Hide end screen UI
         endGameMenu.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
+        // Disable THIS defeat component on manager
+        var gm = GameObject.FindWithTag("GameManager");
+        if (gm != null)
+        {
+            var bearDefeat = gm.GetComponent<MonsterBearDefeat>();
+            if (bearDefeat != null)
+                bearDefeat.enabled = false;
+        }
+
         Debug.Log("Player returned to previous location successfully.");
+        /*
+        // -------------------------------------------------
+        // Assign player reference to all EnemySpawners
+        // -------------------------------------------------
+        EnemySpawner[] spawners =
+            Object.FindObjectsByType<EnemySpawner>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+
+        Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        foreach (var spawner in spawners)
+        {
+            spawner.player = playerTransform;
+        }*/
     }
-
-
-
+    
+    private IEnumerator RestartEnemySpawner()
+    {
+        yield return new WaitForSeconds(5f);
+        var enemyspawner = GetComponent<EnemySpawner>();
+        enemyspawner.Start();
+    }
 }

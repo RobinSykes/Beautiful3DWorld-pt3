@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using StarterAssets;
 
 public class SummonBearBoss : MonoBehaviour
 {
@@ -16,41 +17,32 @@ public class SummonBearBoss : MonoBehaviour
     private float fadeInDuration = 1f;
     private float visibleDuration = 2f;
     private float fadeOutDuration = 1f;
+
     public static Vector3 lastPlayerPosition;
     public static Quaternion lastPlayerRotation;
+
     public void SpawnBearBoss()
     {
         Debug.Log("[SummonBearBoss] SpawnBearBoss triggered.");
         SummonBoss.SetActive(false);
         StartCoroutine(TeleportSequence());
-        FindFirstObjectByType<BackgroundMusicManager>()?.StopForBossSummon();
+
+        Object.FindFirstObjectByType<BackgroundMusicManager>()?.StopForBossSummon();
     }
 
     private IEnumerator TeleportSequence()
     {
-        // Fade to black
         if (blackoutCanvas != null)
-        {
             yield return StartCoroutine(FadeCanvas(blackoutCanvas, 0f, 1f, 0.5f));
-        }
 
-
-
-        // Wait a moment for everything to settle
         yield return new WaitForSeconds(0.2f);
-        // Teleport player
-        Debug.Log("[SummonBearBoss] Calling TeleportPlayer()...");
+
         TeleportPlayer();
-        // Rotate camera to player forward
         AlignCameraToPlayer();
 
-        // Fade back in
         if (blackoutCanvas != null)
-        {
             yield return StartCoroutine(FadeCanvas(blackoutCanvas, 1f, 0f, 0.5f));
-        }
 
-        // Text sequence + boss spawn
         if (bossText != null)
             StartCoroutine(FadeTextSequence());
 
@@ -72,7 +64,6 @@ public class SummonBearBoss : MonoBehaviour
 
         canvas.alpha = to;
 
-        // Hide when fully transparent
         if (to <= 0f)
             canvas.gameObject.SetActive(false);
     }
@@ -85,30 +76,48 @@ public class SummonBearBoss : MonoBehaviour
             Debug.LogWarning("[SummonBearBoss] No player found with tag 'Player'.");
             return;
         }
+
         lastPlayerPosition = player.transform.position;
         lastPlayerRotation = player.transform.rotation;
 
         Transform playerRoot = player.transform;
+
         if (teleportPlayerArea == null)
         {
             Debug.LogWarning("[SummonBearBoss] No teleport destination assigned.");
             return;
         }
 
-        // Disable movement + controllers on all child components
-        foreach (var mb in playerRoot.GetComponentsInChildren<MonoBehaviour>())
+        // Disable player movement systems
+        var tpc = playerRoot.GetComponentInChildren<ThirdPersonController>();
+        if (tpc) tpc.enabled = false;
+
+        var pac = playerRoot.GetComponentInChildren<PlayerAnimationController>();
+        if (pac) pac.enabled = false;
+
+        var pm = playerRoot.GetComponentInChildren<PlayerMovement>();
+        if (pm) pm.enabled = false;
+
+        // Assign player reference to spawners (without disabling them)
+        EnemySpawner[] spawners =
+            Object.FindObjectsByType<EnemySpawner>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+
+        Transform playerTransform = player.transform;
+
+        foreach (var spawner in spawners)
         {
-            if (mb.GetType().Name.Contains("Controller") || mb.GetType().Name.Contains("Movement"))
-                mb.enabled = false;
+            spawner.player = playerTransform;
         }
 
-        foreach (var cc in playerRoot.GetComponentsInChildren<CharacterController>())
-            cc.enabled = false;
+        Debug.Log($"[SummonBearBoss] Player BEFORE teleport: {playerRoot.position}");
 
-        Debug.Log($"[SummonBearBoss] Player position BEFORE teleport: {playerRoot.position}");
         playerRoot.position = teleportPlayerArea.position;
         playerRoot.rotation = teleportPlayerArea.rotation;
-        Debug.Log($"[SummonBearBoss] Player position AFTER teleport: {playerRoot.position}");
+
+        Debug.Log($"[SummonBearBoss] Player AFTER teleport: {playerRoot.position}");
 
         StartCoroutine(ReenableControllers(playerRoot));
     }
@@ -120,11 +129,14 @@ public class SummonBearBoss : MonoBehaviour
         foreach (var cc in playerRoot.GetComponentsInChildren<CharacterController>())
             cc.enabled = true;
 
-        foreach (var mb in playerRoot.GetComponentsInChildren<MonoBehaviour>())
-        {
-            if (mb.GetType().Name.Contains("Controller") || mb.GetType().Name.Contains("Movement"))
-                mb.enabled = true;
-        }
+        var tpc = playerRoot.GetComponentInChildren<ThirdPersonController>();
+        if (tpc) tpc.enabled = true;
+
+        var pac = playerRoot.GetComponentInChildren<PlayerAnimationController>();
+        if (pac) pac.enabled = true;
+
+        var pm = playerRoot.GetComponentInChildren<PlayerMovement>();
+        if (pm) pm.enabled = true;
 
         Debug.Log("[SummonBearBoss] Player re-enabled successfully after teleport.");
     }
@@ -137,14 +149,9 @@ public class SummonBearBoss : MonoBehaviour
         Camera mainCam = Camera.main;
         if (mainCam == null) return;
 
-        // Smoothly align camera to player’s forward
-        mainCam.transform.rotation = Quaternion.Lerp(
-            mainCam.transform.rotation,
-            Quaternion.LookRotation(player.transform.forward),
-            1f
-        );
+        mainCam.transform.rotation = Quaternion.LookRotation(player.transform.forward);
 
-        Debug.Log("[SummonBearBoss] Camera aligned to player forward direction.");
+        Debug.Log("[SummonBearBoss] Camera aligned to player.");
     }
 
     private IEnumerator SpawnAfterDelay()
@@ -152,8 +159,8 @@ public class SummonBearBoss : MonoBehaviour
         Debug.Log($"[SummonBearBoss] Waiting {spawnDelay} seconds before spawning boss...");
         yield return new WaitForSeconds(spawnDelay);
 
-        Vector3 position = spawnPoint != null ? spawnPoint.position : transform.position;
-        Quaternion rotation = spawnPoint != null ? spawnPoint.rotation : Quaternion.identity;
+        Vector3 position = spawnPoint ? spawnPoint.position : transform.position;
+        Quaternion rotation = spawnPoint ? spawnPoint.rotation : Quaternion.identity;
 
         Instantiate(BearBoss, position, rotation);
         Debug.Log($"[SummonBearBoss] Bear Boss spawned at {position}");
@@ -208,9 +215,10 @@ public class SummonBearBoss : MonoBehaviour
 
         SummonBossText.alpha = 0f;
     }
+
     public void OnBossDefeated()
     {
-        var bgMusic = FindFirstObjectByType<BackgroundMusicManager>();
+        var bgMusic = Object.FindFirstObjectByType<BackgroundMusicManager>();
         bgMusic?.ResumeAfterBoss();
     }
 }

@@ -124,7 +124,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1617,6 +1617,7 @@ GameObject:
   - component: {fileID: 6341258514521363119}
   - component: {fileID: 566885692026406354}
   - component: {fileID: 5821388491486215073}
+  - component: {fileID: 2539214115907830413}
   m_Layer: 5
   m_Name: Canvas (2)
   m_TagString: Untagged
@@ -1661,7 +1662,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1707,6 +1708,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2539214115907830413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4824536331921428771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cf2a193ed75b24a9eaba0f06bc6907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4934302112394754168
 GameObject:
   m_ObjectHideFlags: 0

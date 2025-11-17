@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int totalEnemies = 8;
 
     [Header("Spawn Settings")]
-    [SerializeField] private Transform player;
+    [SerializeField] public Transform player;
     [SerializeField] private float minSpawnDistance = 25f;
     [SerializeField] private float maxSpawnDistance = 150f;
     [SerializeField] private LayerMask groundLayer;
@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private int[] spawnCount;
 
-    void Start()
+    public void Start()
     {
         ApplyDifficultySettings(); // Apply difficulty scaling
 

@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour
 
     private void ShowAchievementsMenu()
     {
-        SceneManager.LoadScene("AchievementsMenu");
+        //SceneManager.LoadScene("AchievementsMenu");
         Debug.Log("Show Achievements Menu");
     }
 

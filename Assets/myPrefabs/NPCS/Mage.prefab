@@ -2327,7 +2327,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2619,6 +2619,7 @@ GameObject:
   - component: {fileID: 4852596892998839071}
   - component: {fileID: 6432007410132247567}
   - component: {fileID: 3832009947914619351}
+  - component: {fileID: 6997593759333890839}
   m_Layer: 5
   m_Name: Canvas (2)
   m_TagString: Untagged
@@ -2663,7 +2664,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2709,6 +2710,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6997593759333890839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8550742398548589865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cf2a193ed75b24a9eaba0f06bc6907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8616468571674054105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2900,7 +2913,9 @@ MonoBehaviour:
   HealthBar: {fileID: 5641884115436682102}
   skeletonHit: {fileID: 0}
   villagerHit: {fileID: 6016973649496114942}
+  bossHit: {fileID: 0}
   deathAudio: {fileID: 0}
+  bossAudio: {fileID: 0}
 --- !u!114 &-1425133301071428258
 MonoBehaviour:
   m_ObjectHideFlags: 0

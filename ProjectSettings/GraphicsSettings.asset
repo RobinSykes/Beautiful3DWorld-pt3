@@ -27,15 +27,12 @@ GraphicsSettings:
     m_Shader: {fileID: 102, guid: 0000000000000000f000000000000000, type: 0}
   m_VideoShadersIncludeMode: 2
   m_AlwaysIncludedShaders:
-  - {fileID: 4800000, guid: cd18bd550ff6630468660d0150eed511, type: 3}
-  - {fileID: 4800000, guid: 69e2e8c890f00e04e945ccd10e764372, type: 3}
-  - {fileID: 4800000, guid: 77e1a76a38ecd5a46a270afb12894dd5, type: 3}
-  - {fileID: 4800000, guid: 270965b004462ae41bd125bc783c0fa6, type: 3}
-  - {fileID: 4800000, guid: 233be0623027421449b81f7423abaf79, type: 3}
+  - {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10783, guid: 0000000000000000f000000000000000, type: 0}
   m_PreloadedShaders: []
   m_PreloadShadersBatchTimeLimit: -1
   m_SpritesDefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_CustomRenderPipeline: {fileID: 11400000, guid: f48f873ae78af40b9a7b8220a8c6f95f, type: 2}
+  m_CustomRenderPipeline: {fileID: 11400000, guid: b40e1cf1685f453478a562e23c06ff8d, type: 2}
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 0, z: 1}
   m_DefaultRenderingPath: 1

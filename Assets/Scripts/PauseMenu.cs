@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -17,9 +18,22 @@ public class PauseMenu : MonoBehaviour
     private Slider sfxSlider;
     private Slider bossSlider;
     private bool isPaused = false;
+    private bool isMainWorld = false;
 
     private void Start()
     {
+        // Check if we are in the MainWorld scene
+        isMainWorld = SceneManager.GetActiveScene().name == "MainWorld";
+
+        // If not in MainWorld, disable this script entirely
+        if (!isMainWorld)
+        {
+            if (pauseMenuUI != null)
+                pauseMenuUI.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         if (pauseMenuUI != null)
             pauseUIDoc = pauseMenuUI.GetComponent<UIDocument>();
 
@@ -32,8 +46,9 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        // Detect Escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!isMainWorld) return; // Safety check
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
             if (isPaused)
                 ResumeGame();
